@@ -2,8 +2,9 @@ FactoryBot.define do
 
   factory :user do
     email                 {"kkk@gmail.com"}
-    password              {"0000aaaa"}
-    password_confirmation {"0000aaaa"}
+    encrypted_password    {"password"}
+    reset_password_token  {"password"}
+    nickname              {"taki"}
   end
 
 end
