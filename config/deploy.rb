@@ -2,48 +2,54 @@ lock '3.11.2'
 
 set :application, 'freemarket_sample_58b'
 
-set :repo_url,  'git@github.com:Tatsuka/freemarket_sample_58b.git'
+set :repo_url,  'git@github.com:Hiroki1888999/freemarket_sample_58b.git'
 
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'public/uploads')
+set :branch, 'master'
 
-set :rbenv_type, :user
-set :rbenv_ruby, '2.5.1'
+set :deploy_to, 'var/www/rails/freemarket_sample_58b'
 
-set :ssh_options, auth_methods: ['publickey'],
-                  keys: ['~/.ssh/ThalysRedline.pem']
+set :linked_files, fetch(:linked_files, []).push('config/settings.yml')
 
-set :unicorn_pid, -> { "#{shared_path}/tmp/pids/unicorn.pid" }
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
-set :unicorn_config_path, -> { "#{current_path}/config/unicorn.rb" }
 set :keep_releases, 5
 
-set :linked_files, %w{ config/master.key }
+set :rbenv_ruby, '2.5.1'
 
-after 'deploy:publishing', 'deploy:restart'
+set :log_level, :debug
+
 namespace :deploy do
+  desc 'Restart application'
   task :restart do
     invoke 'unicorn:restart'
   end
 
-  desc 'upload master.key'
-  task :upload do
-    on roles(:app) do |host|
-      if test "[ ! -d #{shared_path}/config ]"
-        execute "mkdir -p #{shared_path}/config"
+  desc 'Create database'
+  task :db_create do
+    on roles(:db) do |host|
+      with rails_env: fetch(:rails_env) do
+        within current_path do
+          excute :bundle, :exec, :rake, 'db:create'
+        end
       end
-      upload!('config/master.key', "#{shared_path}/config/master.key")
     end
   end
-  before :starting, 'deploy:upload'
-  after :finishing, 'deploy:cleanup'
+
+  desc 'Run seed'
+  task :seed do
+    on roles(:app) do
+      with rails_env: fetch(:rails_env) do
+        within current_path do
+          excute :bundle, :exec, :rake, 'db:seed'
+        end
+      end
+    end
+  end
+  
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+    end
+  end
 end
-
-set :default_env, {
-  rbenv_root: "/usr/local/rbenv",
-  path: "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH",
-  BASIC_AUTH_USER: ENV["BASIC_AUTH_USER"],
-  BASIC_AUTH_PASSWORD: ENV["BASIC_AUTH_PASSWORD"],
-  AWS_ACCESS_KEY_ID: ENV["AWS_ACCESS_KEY_ID"],
-  AWS_SECRET_ACCESS_KEY: ENV["AWS_SECRET_ACCESS_KEY"]
-}
-
