@@ -6,7 +6,7 @@ set :repo_url,  'git@github.com:Hiroki1888999/freemarket_sample_58b.git'
 
 set :branch, 'master'
 
-set :deploy_to, 'var/www/rails/freemarket_sample_58b'
+set :deploy_to, '/var/www/rails/freemarket_sample_58b'
 
 set :linked_files, fetch(:linked_files, []).push('config/settings.yml')
 
