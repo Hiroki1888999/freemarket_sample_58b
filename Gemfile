@@ -48,6 +48,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'pry-rails'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 group :development do
