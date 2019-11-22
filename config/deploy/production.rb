@@ -1,4 +1,4 @@
-server '52.197.176.33', user: 'ec2-user', roles: %w{app db web}
+server '52.197.176.33', user: 'hiro', roles: %w{app db web}
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
@@ -8,7 +8,7 @@ server '52.197.176.33', user: 'ec2-user', roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-set :ssh_options, keys: '~/.ssh/hiro_key_rsa'
+set :ssh_options, keys: '~/.ssh/fs58b_key_rsa'
 set :rails_env, "production"
 set :unicorn_rack_env, "production"
 
