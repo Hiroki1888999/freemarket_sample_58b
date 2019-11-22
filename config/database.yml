@@ -24,9 +24,10 @@ test:
   database: freemarket_sample_58b_test
 
 production:
-  <<: *default
-  database: <%= ENV['DB_NAME'] %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  host: <%= ENV['DB_HOSTNAME'] %>
-
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  database: freemarket_sample_58b_production
+  username: root
+  password:
+  socket: /var/lib/mysql/mysql.sock
