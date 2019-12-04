@@ -29,5 +29,5 @@ production:
   pool: 5
   database: pictweet_production
   username: root
-  password:
+  password: pass
   socket: /var/lib/mysql/mysql.sock
