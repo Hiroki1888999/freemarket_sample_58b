@@ -27,7 +27,7 @@ production:
   adapter: mysql2
   encoding: utf8
   pool: 5
-  database: freemarket_sample_58b_production
+  database: pictweet_production
   username: root
   password:
   socket: /var/lib/mysql/mysql.sock
